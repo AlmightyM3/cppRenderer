@@ -1,0 +1,59 @@
+# Visual Studio temporary files, build results, and other generated files
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bin/
+obj/
+*.obj
+*.lib
+*.exp
+*.ilk
+*.pdb
+*.tlog
+*.log
+*.bsc
+*.sbr
+*.res
+*.pch
+*.ipch
+
+## Visual Studio cache files
+.vs/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+
+## User-specific files
+*.suo
+*.user
+*.bak
+*.exe
+*.dll
+*.iobj
+*.ipdb
+*.idb
+
+## IntelliSense and browsing files
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+
+## Visual Studio Code (if used)
+.vscode/
+
+# Package Management (e.g., NuGet)
+packages/
+
+# External dependencies (if not managed by source control)
+vcpkg_installed/
