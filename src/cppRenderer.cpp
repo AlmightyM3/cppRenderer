@@ -21,6 +21,7 @@ void OpenGL_ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity
 			case GL_DEBUG_SOURCE_THIRD_PARTY: return "THIRD PARTY";
 			case GL_DEBUG_SOURCE_APPLICATION: return "APPLICATION";
 			case GL_DEBUG_SOURCE_OTHER: return "OTHER";
+			default: return "SOURCE " + source;
 		}
 	}();
 
@@ -34,6 +35,7 @@ void OpenGL_ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity
 			case GL_DEBUG_TYPE_PERFORMANCE: return "PERFORMANCE";
 			case GL_DEBUG_TYPE_MARKER: return "MARKER";
 			case GL_DEBUG_TYPE_OTHER: return "OTHER";
+			default: return "TYPE " + type;
 		}
 	}();
 
@@ -43,6 +45,7 @@ void OpenGL_ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity
 			case GL_DEBUG_SEVERITY_LOW: return "LOW";
 			case GL_DEBUG_SEVERITY_MEDIUM: return "MEDIUM";
 			case GL_DEBUG_SEVERITY_HIGH: return "HIGH";
+			default: return "SEVERITY " + severity;
 		}
 	}();
 	std::cerr << src_str << ", " << type_str << ", " << severity_str << ", " << id << ": " << message << '\n';
@@ -63,16 +66,6 @@ void GLFW_ResizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
-
-//std::vector <vertex> vertices = {
-//	{glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-//	{glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-//	{glm::vec3(0.0f,  0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-//};  
-//
-//std::vector<uint32_t> indices = {
-//	0, 1, 2
-//};
 
 int main()
 {
@@ -107,6 +100,8 @@ int main()
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(OpenGL_ErrorCallback, nullptr);
 
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 
 	Mesh triangle = Mesh(
 		{
