@@ -1,10 +1,14 @@
 ﻿#include <iostream>
+#include <vector>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
+#include <glm/glm.hpp>
 
 #include "shader.h"
+#include "mesh.h"
+
 
 void OpenGL_ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param)
 {
@@ -60,15 +64,15 @@ void GLFW_ResizeCallback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
-};  
-
-uint32_t indices[] = {
-	0, 1, 2
-};
+//std::vector <vertex> vertices = {
+//	{glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+//	{glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+//	{glm::vec3(0.0f,  0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+//};  
+//
+//std::vector<uint32_t> indices = {
+//	0, 1, 2
+//};
 
 int main()
 {
@@ -103,21 +107,29 @@ int main()
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(OpenGL_ErrorCallback, nullptr);
 
-	unsigned int VBO;
-	glGenBuffers(1, &VBO);
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
 
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	unsigned int EBO;
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	Mesh triangle = Mesh(
+		{
+			{glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+			{glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+			{glm::vec3(0.0f,  0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+		}, 
+		{
+			0, 1, 2
+		}
+	);
+	Mesh square = Mesh(
+		{
+			{glm::vec3(0.5f, 0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+			{glm::vec3(0.75f, 0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+			{glm::vec3(0.5f, 0.75f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+			{glm::vec3(0.75f, 0.75f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+		},
+		{
+			0, 1, 2,
+			1, 3, 2
+		}
+	);
 
 	Shader shader("test.vert","test.frag");
 
@@ -127,11 +139,10 @@ int main()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glBindVertexArray(VAO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		shader.use();
 		shader.setFloat("time", (float)glfwGetTime());
-		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(indices[0]), GL_UNSIGNED_INT, NULL);
+		triangle.render();
+		square.render();
 
 		// Update screen
 		glfwSwapBuffers(window);

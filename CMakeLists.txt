@@ -13,11 +13,13 @@ project ("cppRenderer")
 
 # Set up Glad
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/glad/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/glm/)
+
 
 file(COPY "src/test.vert" "src/test.frag" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # Add source to this project's executable.
-add_executable (cppRenderer "src/cppRenderer.cpp" "glad/src/gl.c" "src/shader.cpp" "src/shader.h" )
+add_executable (cppRenderer "src/cppRenderer.cpp" "glad/src/gl.c" "src/shader.cpp" "src/shader.h"  "src/mesh.h" "src/mesh.cpp")
 
 # Set up GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
