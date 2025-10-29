@@ -66,6 +66,10 @@ float vertices[] = {
      0.0f,  0.5f, 0.0f
 };  
 
+uint32_t indices[] = {
+	0, 1, 2
+};
+
 int main()
 {
 	// Start glfw
@@ -110,18 +114,24 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
+	unsigned int EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
 	Shader shader("test.vert","test.frag");
 
 	// Start main loop
 	while (!glfwWindowShouldClose(window))
 	{
-		glClearColor(0.1, 0.1, 0.1, 1.0);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glBindVertexArray(VAO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		shader.use();
 		shader.setFloat("time", (float)glfwGetTime());
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(indices[0]), GL_UNSIGNED_INT, NULL);
 
 		// Update screen
 		glfwSwapBuffers(window);
