@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include <glad/gl.h>
 #include <glm/glm.hpp>
@@ -8,6 +9,7 @@
 struct vertex { 
     glm::vec3 pos, normal; glm::vec2 texCoord; 
 
+    vertex() {}
     vertex(glm::vec3 p, glm::vec3 n, glm::vec2 t) : pos(p), normal(n), texCoord(t) {}
 };
 
@@ -19,9 +21,11 @@ private:
     GLuint VAO;
 
     void uploadData();
+    void loadOBJ(std::string filePath);
 
 public:
     Mesh(std::vector<vertex> initialVertices, std::vector<uint32_t> initialIndices);
+    Mesh(std::string filePath);
 
     ~Mesh();
 

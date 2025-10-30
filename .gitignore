@@ -7,7 +7,7 @@ x86/
 build/
 bin/
 obj/
-*.obj
+#*.obj
 *.lib
 *.exp
 *.ilk
