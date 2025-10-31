@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 
-void handleCompileError(GLuint shader)
+static void handleCompileError(GLuint shader)
 {
 	GLint result = GL_FALSE;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
@@ -14,7 +14,7 @@ void handleCompileError(GLuint shader)
 		exit(-1);
 	};
 }
-void handleLinkError(GLuint program)
+static void handleLinkError(GLuint program)
 {
 	GLint result = GL_FALSE;
 	glGetProgramiv(program, GL_LINK_STATUS, &result);

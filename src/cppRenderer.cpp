@@ -10,7 +10,7 @@
 #include "mesh.h"
 
 
-void OpenGL_ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param)
+static void OpenGL_ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param)
 {
 	auto const src_str = [source]() {
 		switch (source)
@@ -51,7 +51,7 @@ void OpenGL_ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity
 	std::cerr << src_str << ", " << type_str << ", " << severity_str << ", " << id << ": " << message << '\n';
 }
 
-void GLFW_ErrorCallback(int error, const char* description)
+static void GLFW_ErrorCallback(int error, const char* description)
 {
 	std::cerr << "GLFW ERROR: " << description << "\n";
 }
@@ -62,7 +62,7 @@ static void GLFW_KeyCallback(GLFWwindow* window, int key, int scancode, int acti
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-void GLFW_ResizeCallback(GLFWwindow* window, int width, int height)
+static void GLFW_ResizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
