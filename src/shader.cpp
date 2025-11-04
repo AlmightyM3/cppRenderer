@@ -1,6 +1,7 @@
 #include "shader.h"
 #include <fstream>
 #include <iostream>
+#include <glm/gtc/type_ptr.hpp>
 
 static void handleCompileError(GLuint shader)
 {
@@ -110,5 +111,9 @@ void Shader::setInt(std::string name, int value) {
 
 void Shader::setFloat(std::string name, float value) {
 	glProgramUniform1f(Shader::program, Shader::uniforms[name].location, value);
+}
+
+void Shader::setMat4(std::string name, glm::mat4 value) {
+	glProgramUniformMatrix4fv(Shader::program, Shader::uniforms[name].location, 1, GL_FALSE, glm::value_ptr(value));
 }
 // to set a array glProgramUniformXXv(program_name, uniforms["my_array[0]"].location, uniforms["my_array[0]"].count, my_array);

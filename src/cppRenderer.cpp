@@ -5,9 +5,11 @@
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "shader.h"
 #include "mesh.h"
+#include "camera.h"
 
 
 static void OpenGL_ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param)
@@ -62,9 +64,12 @@ static void GLFW_KeyCallback(GLFWwindow* window, int key, int scancode, int acti
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
+Camera cam;
 static void GLFW_ResizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+	cam.aspectRatio = ((float)width) / ((float)height);
+	cam.recalculateMatrix();
 }
 
 int main()
@@ -127,6 +132,8 @@ int main()
 	);
 
 	Shader shader("test.vert","test.frag");
+	
+	cam = Camera(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 16.0f/9.0f, 45.0f);
 
 	// Start main loop
 	while (!glfwWindowShouldClose(window))
@@ -136,6 +143,7 @@ int main()
 
 		shader.use();
 		shader.setFloat("time", (float)glfwGetTime());
+		shader.setMat4("camera", cam.matrix);
 		triangle.render();
 		square.render();
 

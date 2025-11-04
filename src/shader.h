@@ -3,6 +3,7 @@
 #include <string>
 #include <glad/gl.h>
 #include <unordered_map>
+#include <glm/glm.hpp>
 
 struct uniformInfo
 {
@@ -28,4 +29,5 @@ public:
 
     void setInt(std::string name, int value);
     void setFloat(std::string name, float value);
+    void setMat4(std::string name, glm::mat4 value);
 };
