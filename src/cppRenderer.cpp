@@ -116,28 +116,7 @@ int main()
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
-	Mesh triangle = Mesh(
-		{
-			{glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-			{glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-			{glm::vec3(0.0f,  0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-		}, 
-		{
-			0, 1, 2
-		}
-	);
-	Mesh square = Mesh(
-		{
-			{glm::vec3(0.5f, 0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-			{glm::vec3(0.75f, 0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-			{glm::vec3(0.5f, 0.75f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-			{glm::vec3(0.75f, 0.75f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-		},
-		{
-			0, 1, 2,
-			1, 3, 2
-		}
-	);
+	Mesh suzanne = Mesh("Suzanne.obj");
 
 	Shader shader("test.vert","test.frag");
 	
@@ -164,10 +143,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
-		shader.setFloat("time", (float)oldTime);
 		shader.setMat4("camera", cam.matrix);
-		triangle.render();
-		square.render();
+		suzanne.render();
 
 		// Update screen
 		glfwSwapBuffers(window);

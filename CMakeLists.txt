@@ -18,7 +18,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libraries/glm/)
 
 file(COPY "src/test.vert" "src/test.frag" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-file(COPY "assets/test.obj" "assets/test.mtl" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY "assets/Suzanne.obj" "assets/Suzanne.mtl" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # Add source to this project's executable.
 add_executable (cppRenderer "src/cppRenderer.cpp" "libraries/glad/src/gl.c" "libraries/stb_image.h" "src/shader.cpp" "src/shader.h"  "src/mesh.h" "src/mesh.cpp" "src/camera.h" "src/camera.cpp")
