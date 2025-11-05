@@ -58,13 +58,20 @@ static void GLFW_ErrorCallback(int error, const char* description)
 	std::cerr << "GLFW ERROR: " << description << "\n";
 }
 
+std::unordered_map<int, bool> keys;
 static void GLFW_KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	if (action == GLFW_PRESS) {
+		if (key == GLFW_KEY_ESCAPE)
+			glfwSetWindowShouldClose(window, GLFW_TRUE);
+		keys[key] = true;
+	}
+	else if (action == GLFW_RELEASE) {
+		keys[key] = false;
+	}
 }
 
-Camera cam;
+FreeCamera cam;
 static void GLFW_ResizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
@@ -95,6 +102,7 @@ int main()
 	// Set callback for user inputs
 	glfwSetKeyCallback(window, GLFW_KeyCallback);
 	glfwSetFramebufferSizeCallback(window, GLFW_ResizeCallback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
 	// Set up OpenGL
@@ -133,16 +141,30 @@ int main()
 
 	Shader shader("test.vert","test.frag");
 	
-	cam = Camera(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 16.0f/9.0f, 45.0f);
+	cam = FreeCamera(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 16.0f/9.0f, 45.0f);
+
+	double mouseX, mouseY = -1.0f;
+	glfwGetCursorPos(window, &mouseX, &mouseY);
+	double oldTime = glfwGetTime();
 
 	// Start main loop
 	while (!glfwWindowShouldClose(window))
 	{
+		double newTime = glfwGetTime();
+		float dt = 0.001f * (float)(newTime - oldTime);
+		oldTime = newTime;
+		
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+		cam.update(keys, (float)(xpos - mouseX), (float)(ypos - mouseY), dt);
+		mouseX = xpos;
+		mouseY = ypos;
+
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
-		shader.setFloat("time", (float)glfwGetTime());
+		shader.setFloat("time", (float)oldTime);
 		shader.setMat4("camera", cam.matrix);
 		triangle.render();
 		square.render();
