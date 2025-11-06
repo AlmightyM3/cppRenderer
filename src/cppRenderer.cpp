@@ -9,6 +9,7 @@
 
 #include "shader.h"
 #include "mesh.h"
+#include "texture.h"
 #include "camera.h"
 
 
@@ -118,6 +119,8 @@ int main()
 
 	Mesh suzanne = Mesh("Suzanne.obj");
 
+	Texture uvGrid = Texture("uvGrid.png");
+
 	Shader shader("test.vert","test.frag");
 	
 	cam = FreeCamera(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 16.0f/9.0f, 45.0f);
@@ -143,6 +146,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
+		uvGrid.bind(0);
+		shader.setInt("testImg", 0);
 		shader.setMat4("camera", cam.matrix);
 		suzanne.render();
 
@@ -151,7 +156,7 @@ int main()
 
 		// Handle events
 		glfwPollEvents();
-	}
+	} 
 
 	// Close the app
 	glfwDestroyWindow(window);

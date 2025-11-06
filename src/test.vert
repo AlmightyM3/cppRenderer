@@ -4,12 +4,12 @@ layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNorm;
 layout (location = 2) in vec2 aTex;
 
-layout (location = 0) out vec3 color;
+layout (location = 0) out vec2 texCoord;
 
 uniform mat4 camera;
 
 void main()
 {
 	gl_Position = camera * vec4(aPos, 1.0f);
-	color = normalize(aNorm);
+	texCoord = aTex;
 }
