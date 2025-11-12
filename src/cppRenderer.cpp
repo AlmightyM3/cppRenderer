@@ -1,11 +1,9 @@
 ﻿#include <iostream>
-#include <vector>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include "shader.h"
 #include "mesh.h"
