@@ -22,8 +22,14 @@ file(COPY "assets/Suzanne.obj" "assets/Suzanne.mtl" DESTINATION ${CMAKE_CURRENT_
 
 file(COPY "assets/uvGrid.png" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
+file(GLOB IMGUI_FILES "libraries/imgui/*.h" "libraries/imgui/*.cpp" "libraries/imgui/backends/imgui_impl_opengl3.h" "libraries/imgui/backends/imgui_impl_opengl3.cpp" "libraries/imgui/backends/imgui_impl_glfw.h" "libraries/imgui/backends/imgui_impl_glfw.cpp")
+include_directories(
+    "libraries/imgui"
+    "libraries/imgui/backends"
+)
+
 # Add source to this project's executable.
-add_executable (cppRenderer "src/cppRenderer.cpp" "libraries/glad/src/gl.c" "src/stb_image.h" "src/shader.cpp" "src/shader.h"  "src/mesh.h" "src/mesh.cpp" "src/camera.h" "src/camera.cpp" "src/texture.h" "src/texture.cpp" )
+add_executable (cppRenderer "src/cppRenderer.cpp" "libraries/glad/src/gl.c" "src/stb_image.h" ${IMGUI_FILES} "src/shader.cpp" "src/shader.h"  "src/mesh.h" "src/mesh.cpp" "src/camera.h" "src/camera.cpp" "src/texture.h" "src/texture.cpp" )
 
 # Set up GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

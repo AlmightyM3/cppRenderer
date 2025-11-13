@@ -4,6 +4,9 @@
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
 #include <glm/glm.hpp>
+#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_glfw.h"
 
 #include "shader.h"
 #include "mesh.h"
@@ -101,7 +104,7 @@ int main()
 	// Set callback for user inputs
 	glfwSetKeyCallback(window, GLFW_KeyCallback);
 	glfwSetFramebufferSizeCallback(window, GLFW_ResizeCallback);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
 	// Set up OpenGL
@@ -111,6 +114,16 @@ int main()
 
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(OpenGL_ErrorCallback, nullptr);
+
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
+	// Setup Platform/Renderer backends
+	ImGui_ImplGlfw_InitForOpenGL(window, true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+	ImGui_ImplOpenGL3_Init();
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -130,15 +143,26 @@ int main()
 	// Start main loop
 	while (!glfwWindowShouldClose(window))
 	{
+		// Handle events
+		glfwPollEvents();
+
 		double newTime = glfwGetTime();
 		float dt = 0.001f * (float)(newTime - oldTime);
 		oldTime = newTime;
 		
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
-		cam.update(keys, (float)(xpos - mouseX), (float)(ypos - mouseY), dt);
+		if (!(io.WantCaptureMouse || io.WantCaptureKeyboard))
+			cam.update(keys, (float)(xpos - mouseX), (float)(ypos - mouseY), dt);
 		mouseX = xpos;
 		mouseY = ypos;
+
+		// Start the Dear ImGui frame
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::ShowDemoWindow();
 
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -149,14 +173,17 @@ int main()
 		shader.setMat4("camera", cam.matrix);
 		suzanne.render();
 
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 		// Update screen
 		glfwSwapBuffers(window);
-
-		// Handle events
-		glfwPollEvents();
 	} 
 
 	// Close the app
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
