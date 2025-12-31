@@ -12,6 +12,7 @@
 #include "mesh.h"
 #include "texture.h"
 #include "camera.h"
+#include "transform.h"
 
 
 static void OpenGL_ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param)
@@ -129,6 +130,9 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	Mesh suzanne = Mesh("Suzanne.obj");
+	Transform suzanneTransform = Transform(glm::vec3(2.0f, 0.0f, 1.0f));
+	Mesh cube = Mesh("Cube.obj");
+	Transform cubeTransform = Transform();
 
 	Texture uvGrid = Texture("uvGrid.png");
 
@@ -147,15 +151,22 @@ int main()
 		glfwPollEvents();
 
 		double newTime = glfwGetTime();
-		float dt = 0.001f * (float)(newTime - oldTime);
+		float dt = (float)(newTime - oldTime);
 		oldTime = newTime;
 		
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
-		if (!(io.WantCaptureMouse || io.WantCaptureKeyboard))
+		if (!(io.WantCaptureMouse || io.WantCaptureKeyboard) && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 			cam.update(keys, (float)(xpos - mouseX), (float)(ypos - mouseY), dt);
+		} else
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			
 		mouseX = xpos;
 		mouseY = ypos;
+
+		cubeTransform.rotationAngle += dt * 0.5f;
+		cubeTransform.recalculateMatrix();
 
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
@@ -171,7 +182,12 @@ int main()
 		uvGrid.bind(0);
 		shader.setInt("testImg", 0);
 		shader.setMat4("camera", cam.matrix);
+
+		shader.setMat4("transform", suzanneTransform.matrix );
 		suzanne.render();
+
+		shader.setMat4("transform", cubeTransform.matrix);
+		cube.render();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

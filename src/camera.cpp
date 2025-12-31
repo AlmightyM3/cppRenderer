@@ -54,17 +54,17 @@ void FreeCamera::update(std::unordered_map<int, bool> keys, float mouseDx, float
 
 	
 	if (keys[GLFW_KEY_W] || keys[GLFW_KEY_UP])
-		FreeCamera::position += FreeCamera::moveSpeed * FreeCamera::direction;
+		FreeCamera::position += FreeCamera::direction * FreeCamera::moveSpeed * dt;
 	if (keys[GLFW_KEY_S] || keys[GLFW_KEY_DOWN])
-		FreeCamera::position -= FreeCamera::moveSpeed * FreeCamera::direction;
+		FreeCamera::position -= FreeCamera::direction * FreeCamera::moveSpeed * dt;
 	if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT])
-		FreeCamera::position -= glm::normalize(glm::cross(FreeCamera::direction, FreeCamera::worldUp)) * FreeCamera::moveSpeed;
+		FreeCamera::position -= glm::normalize(glm::cross(FreeCamera::direction, FreeCamera::worldUp)) * FreeCamera::moveSpeed * dt;
 	if (keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT])
-		FreeCamera::position += glm::normalize(glm::cross(FreeCamera::direction, FreeCamera::worldUp)) * FreeCamera::moveSpeed;
+		FreeCamera::position += glm::normalize(glm::cross(FreeCamera::direction, FreeCamera::worldUp)) * FreeCamera::moveSpeed * dt;
 	if (keys[GLFW_KEY_Q])
-		FreeCamera::position += FreeCamera::moveSpeed * FreeCamera::worldUp;
+		FreeCamera::position += FreeCamera::worldUp * FreeCamera::moveSpeed * dt;
 	if (keys[GLFW_KEY_E])
-		FreeCamera::position -= FreeCamera::moveSpeed * FreeCamera::worldUp;
+		FreeCamera::position -= FreeCamera::worldUp * FreeCamera::moveSpeed * dt;
 
 	FreeCamera::recalculateMatrix();
 }

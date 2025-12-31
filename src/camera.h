@@ -38,7 +38,7 @@ public:
 	FreeCamera(glm::vec3 pos, glm::vec3 dir, glm::vec3 up) : Camera(pos, dir, up) {}
 	FreeCamera(glm::vec3 pos, glm::vec3 dir, glm::vec3 up, float ratio, float fov) : Camera(pos, dir, up, ratio, fov) {}
 
-	float moveSpeed = 0.002f;
+	float moveSpeed = 2.0f;
 	float mouseSensitivity = 0.04f;
 
 	void update(std::unordered_map<int, bool> keys, float mouseDx, float mouseDy, float dt) override;

@@ -7,9 +7,10 @@ layout (location = 2) in vec2 aTex;
 layout (location = 0) out vec2 texCoord;
 
 uniform mat4 camera;
+uniform mat4 transform;
 
 void main()
 {
-	gl_Position = camera * vec4(aPos, 1.0f);
+	gl_Position = camera * transform * vec4(aPos, 1.0f);
 	texCoord = aTex;
 }

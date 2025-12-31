@@ -18,7 +18,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libraries/glm/)
 
 file(COPY "src/test.vert" "src/test.frag" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-file(COPY "assets/Suzanne.obj" "assets/Suzanne.mtl" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY "assets/Suzanne.obj" "assets/Suzanne.mtl" "assets/Cube.obj" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 file(COPY "assets/uvGrid.png" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -29,7 +29,7 @@ include_directories(
 )
 
 # Add source to this project's executable.
-add_executable (cppRenderer "src/cppRenderer.cpp" "libraries/glad/src/gl.c" "src/stb_image.h" ${IMGUI_FILES} "src/shader.cpp" "src/shader.h"  "src/mesh.h" "src/mesh.cpp" "src/camera.h" "src/camera.cpp" "src/texture.h" "src/texture.cpp" )
+add_executable (cppRenderer "src/cppRenderer.cpp" "libraries/glad/src/gl.c" "src/stb_image.h" ${IMGUI_FILES} "src/shader.cpp" "src/shader.h"  "src/mesh.h" "src/mesh.cpp" "src/camera.h" "src/camera.cpp" "src/texture.h" "src/texture.cpp"  "src/transform.h" "src/transform.cpp")
 
 # Set up GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
