@@ -1,17 +1,23 @@
 # cppRenderer
 
-# Libraries: 
-- cMake
-- GLFW
-- GLAD2 (OpenGL 4.xx)
-- glm
-- DearImGui
-- JoltPhysics
+## Planned Features: 
+- [x] OBJ model loading
+- [ ] Deferred rendering
+- [ ] Rigidbody physics
 
-# Classes:
-- Shader
-- Texture
-- Camera
-- Mesh
-- Object
-- Renderer
+## Planned Libraries: 
+- [x] cMake
+- [x] GLFW
+- [x] GLAD2 (OpenGL 4.xx)
+- [x] glm
+- [x] DearImGui
+- [ ] JoltPhysics
+
+## Planned Classes:
+- [x] Shader
+- [x] Texture
+- [x] Camera
+- [x] Mesh
+- [x] Transform
+- [ ] Object
+- [ ] Renderer
