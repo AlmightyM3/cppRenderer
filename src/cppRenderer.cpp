@@ -183,7 +183,7 @@ int main()
 		shader.setInt("testImg", 0);
 		shader.setMat4("camera", cam.matrix);
 
-		shader.setMat4("transform", suzanneTransform.matrix );
+		shader.setMat4("transform", suzanneTransform.matrix);
 		suzanne.render();
 
 		shader.setMat4("transform", cubeTransform.matrix);

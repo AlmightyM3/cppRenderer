@@ -38,7 +38,7 @@ Texture::Texture(GLint type, GLenum fomat, GLsizei width, GLsizei height, const 
 }
 
 Texture::~Texture() {
-
+	glDeleteTextures(1, &(Texture::textureUnit));
 }
 
 void Texture::setParameter(GLenum parameter, GLint value) {
