@@ -16,7 +16,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libraries/glad/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libraries/glm/)
 
 
-file(COPY "src/test.vert" "src/test.frag" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY "src/test.vert" "src/test.frag" "src/shaders/lit.vert" "src/shaders/lit.frag" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 file(COPY "assets/Suzanne.obj" "assets/Suzanne.mtl" "assets/Cube.obj" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 

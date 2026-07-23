@@ -141,6 +141,28 @@ int main()
 	
 	cam = FreeCamera(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 16.0f/9.0f, 45.0f);
 
+
+	Mesh ScreenQuad = Mesh({
+		{ glm::vec3(-1.0f ,-1.0f ,-1.0f), glm::vec3(), glm::vec2() },
+		{ glm::vec3(1.0f ,-1.0f ,-1.0f), glm::vec3(), glm::vec2() },
+		{ glm::vec3(1.0f , 1.0f ,-1.0f), glm::vec3(), glm::vec2() },
+		{ glm::vec3(-1.0f , 1.0f ,-1.0f), glm::vec3(), glm::vec2() }
+	}, 
+		{ 0,1,2, 2,3,0 }
+	);
+	Shader litShader = Shader("lit.vert", "lit.frag");
+
+	//TODO: Allow the textures to resize.
+	Texture gPosition = Texture(GL_RGBA16F, GL_FLOAT, 1920, 1080, NULL);
+	Texture gNormal = Texture(GL_RGBA16F, GL_FLOAT, 1920, 1080, NULL);
+	Texture gColorSpec = Texture(GL_RGBA16F, GL_UNSIGNED_BYTE, 1920, 1080, NULL);
+	Framebuffer gBuffer = Framebuffer();
+	gBuffer.setTexture(GL_COLOR_ATTACHMENT0, gPosition.getTextureUnit());
+	gBuffer.setTexture(GL_COLOR_ATTACHMENT1, gNormal.getTextureUnit());
+	gBuffer.setTexture(GL_COLOR_ATTACHMENT2, gColorSpec.getTextureUnit());
+	unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+	gBuffer.drawBuffers(3, attachments);
+
 	double mouseX, mouseY = -1.0f;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 	double oldTime = glfwGetTime();
@@ -176,6 +198,7 @@ int main()
 
 		ImGui::ShowDemoWindow();
 
+		gBuffer.bind();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -189,6 +212,13 @@ int main()
 
 		shader.setMat4("transform", cubeTransform.matrix);
 		cube.render();
+
+		gBuffer.unbind();
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		litShader.use();
+		ScreenQuad.render();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
