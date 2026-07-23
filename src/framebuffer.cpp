@@ -21,3 +21,11 @@ void Framebuffer::drawBuffers(GLsizei count, const GLenum* attachments) {
 void Framebuffer::clear(GLenum buffer, GLint drawbuffer, const GLfloat* value) {
 	glClearNamedFramebufferfv(Framebuffer::framebuffer, buffer, drawbuffer, value);
 }
+
+void Framebuffer::bind() {
+	glBindFramebuffer(GL_FRAMEBUFFER, Framebuffer::framebuffer);
+}
+
+void Framebuffer::unbind() {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}

@@ -14,4 +14,6 @@ public:
 
 	void setParameter(GLenum parameter, GLint value);
 	void bind(int shaderTexUnit);
+
+	GLuint getTextureUnit();
 };

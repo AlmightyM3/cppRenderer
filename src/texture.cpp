@@ -48,3 +48,7 @@ void Texture::setParameter(GLenum parameter, GLint value) {
 void Texture::bind(int shaderTexUnit) {
 	glBindTextureUnit(shaderTexUnit, Texture::textureUnit);
 }
+
+GLuint Texture::getTextureUnit() {
+	return Texture::textureUnit;
+}

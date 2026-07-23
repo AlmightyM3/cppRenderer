@@ -15,4 +15,8 @@ public:
 	void drawBuffers(GLsizei count, const GLenum* attachments);
 
 	void clear(GLenum buffer, GLint drawbuffer, const GLfloat* value); // drawbuffer is for multiple color buffers
+
+	void bind();
+	
+	void unbind();
 };
