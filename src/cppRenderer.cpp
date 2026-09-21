@@ -137,7 +137,7 @@ int main()
 
 	Texture uvGrid = Texture("uvGrid.png");
 
-	Shader shader("test.vert","test.frag");
+	Shader geomShader = Shader("geom.vert","geom.frag");
 	
 	cam = FreeCamera(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 16.0f/9.0f, 45.0f);
 
@@ -155,11 +155,11 @@ int main()
 	//TODO: Allow the textures to resize.
 	Texture gPosition = Texture(GL_RGBA16F, GL_FLOAT, 1920, 1080, NULL);
 	Texture gNormal = Texture(GL_RGBA16F, GL_FLOAT, 1920, 1080, NULL);
-	Texture gColorSpec = Texture(GL_RGBA16F, GL_UNSIGNED_BYTE, 1920, 1080, NULL);
+	Texture gAlbedoSpec = Texture(GL_RGBA16F, GL_UNSIGNED_BYTE, 1920, 1080, NULL);
 	Framebuffer gBuffer = Framebuffer();
 	gBuffer.setTexture(GL_COLOR_ATTACHMENT0, gPosition.getTextureUnit());
 	gBuffer.setTexture(GL_COLOR_ATTACHMENT1, gNormal.getTextureUnit());
-	gBuffer.setTexture(GL_COLOR_ATTACHMENT2, gColorSpec.getTextureUnit());
+	gBuffer.setTexture(GL_COLOR_ATTACHMENT2, gAlbedoSpec.getTextureUnit());
 	unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
 	gBuffer.drawBuffers(3, attachments);
 
@@ -179,7 +179,7 @@ int main()
 		
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
-		if (!(io.WantCaptureMouse || io.WantCaptureKeyboard) && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+		if (!(io.WantCaptureMouse || io.WantCaptureKeyboard) && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 			cam.update(keys, (float)(xpos - mouseX), (float)(ypos - mouseY), dt);
 		} else
@@ -202,15 +202,15 @@ int main()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shader.use();
+		geomShader.use();
 		uvGrid.bind(0);
-		shader.setInt("testImg", 0);
-		shader.setMat4("camera", cam.matrix);
+		geomShader.setInt("testImg", 0);
+		geomShader.setMat4("camera", cam.matrix);
 
-		shader.setMat4("transform", suzanneTransform.matrix);
+		geomShader.setMat4("transform", suzanneTransform.matrix);
 		suzanne.render();
 
-		shader.setMat4("transform", cubeTransform.matrix);
+		geomShader.setMat4("transform", cubeTransform.matrix);
 		cube.render();
 
 		gBuffer.unbind();
@@ -218,6 +218,12 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		litShader.use();
+		gPosition.bind(0);
+		litShader.setInt("gPosition", 0);
+		gNormal.bind(1);
+		litShader.setInt("gNormal", 1);
+		gAlbedoSpec.bind(2);
+		litShader.setInt("gAlbedoSpec", 2);
 		ScreenQuad.render();
 
 		ImGui::Render();
