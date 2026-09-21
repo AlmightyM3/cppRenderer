@@ -18,6 +18,10 @@ void Framebuffer::drawBuffers(GLsizei count, const GLenum* attachments) {
 	glNamedFramebufferDrawBuffers(Framebuffer::framebuffer, count, attachments);
 }
 
+void Framebuffer::attachRenderbuffer(GLuint renderbuffer, GLenum attatchment) {
+	glNamedFramebufferRenderbuffer(Framebuffer::framebuffer, attatchment, GL_RENDERBUFFER, renderbuffer);
+}
+
 void Framebuffer::clear(GLenum buffer, GLint drawbuffer, const GLfloat* value) {
 	glClearNamedFramebufferfv(Framebuffer::framebuffer, buffer, drawbuffer, value);
 }

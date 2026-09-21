@@ -14,6 +14,7 @@
 #include "camera.h"
 #include "transform.h"
 #include "framebuffer.h"
+#include "renderbuffer.h"
 
 
 static void OpenGL_ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param)
@@ -94,6 +95,7 @@ int main()
 
 	// Set error calback for glfw
 	glfwSetErrorCallback(GLFW_ErrorCallback);
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE); // Enter debug mode for better error messeges.
 
 	// Create the window
 	GLFWwindow* window = glfwCreateWindow(1920, 1080, "cppRenderer", NULL, NULL);
@@ -162,6 +164,8 @@ int main()
 	gBuffer.setTexture(GL_COLOR_ATTACHMENT2, gAlbedoSpec.getTextureUnit());
 	unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
 	gBuffer.drawBuffers(3, attachments);
+	Renderbuffer depthBuffer = Renderbuffer(GL_DEPTH_COMPONENT, 1920, 1080);
+	gBuffer.attachRenderbuffer(depthBuffer.getRenderbuffer(), GL_DEPTH_ATTACHMENT);
 
 	double mouseX, mouseY = -1.0f;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
