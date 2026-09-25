@@ -9,8 +9,7 @@
 struct vertex { 
     glm::vec3 pos, normal; glm::vec2 texCoord; 
 
-    vertex() {}
-    vertex(glm::vec3 p, glm::vec3 n, glm::vec2 t) : pos(p), normal(n), texCoord(t) {}
+    vertex(glm::vec3 p = {}, glm::vec3 n = {}, glm::vec2 t = {}) : pos(p), normal(n), texCoord(t) {}
 };
 
 class Mesh {

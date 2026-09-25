@@ -142,8 +142,7 @@ int main()
 
 	Shader geomShader = Shader("geom.vert","geom.frag");
 	
-	FreeCamera cam = FreeCamera(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 16.0f/9.0f, 45.0f);
-
+	FreeCamera cam = FreeCamera(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 16.0f/9.0f);
 
 	Mesh ScreenQuad = Mesh({
 		{ glm::vec3(-1.0f ,-1.0f ,-1.0f), glm::vec3(), glm::vec2() },

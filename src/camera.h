@@ -10,9 +10,7 @@ class Camera {
 private:
 
 public:
-	Camera() {}
-	Camera(glm::vec3 pos, glm::vec3 dir, glm::vec3 up);
-	Camera(glm::vec3 pos, glm::vec3 dir, glm::vec3 up, float ratio, float fov);
+	Camera(glm::vec3 pos = {}, glm::vec3 dir = { 0.0f, 0.0f, -1.0f }, glm::vec3 up = { 0.0f, 1.0f, 0.0f }, float ratio = 1.0f, float fov = 45.0f);
 
 	~Camera();
 	
@@ -35,8 +33,7 @@ private:
 	float yaw = -90.0f;
 public:
 	FreeCamera() : Camera() {}
-	FreeCamera(glm::vec3 pos, glm::vec3 dir, glm::vec3 up) : Camera(pos, dir, up) {}
-	FreeCamera(glm::vec3 pos, glm::vec3 dir, glm::vec3 up, float ratio, float fov) : Camera(pos, dir, up, ratio, fov) {}
+	FreeCamera(glm::vec3 pos, glm::vec3 dir, glm::vec3 up, float ratio = 1.0f, float fov = 45.0f) : Camera(pos, dir, up, ratio, fov) {}
 
 	float moveSpeed = 2.0f;
 	float mouseSensitivity = 0.04f;

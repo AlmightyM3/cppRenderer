@@ -3,16 +3,6 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-Camera::Camera(glm::vec3 pos, glm::vec3 dir, glm::vec3 up) {
-	Camera::position = pos;
-	Camera::direction = dir;
-	Camera::worldUp = up;
-
-	Camera::aspectRatio = 1.0f;
-	Camera::fov = glm::radians(45.0f);
-
-	Camera::recalculateMatrix();
-}
 Camera::Camera(glm::vec3 pos, glm::vec3 dir, glm::vec3 up, float ratio, float fov) {
 	Camera::position = pos;
 	Camera::direction = dir;
