@@ -76,12 +76,13 @@ static void GLFW_KeyCallback(GLFWwindow* window, int key, int scancode, int acti
 	}
 }
 
-FreeCamera cam;
+struct {
+	int width, height;
+	bool changed;
+} resizeData;
 static void GLFW_ResizeCallback(GLFWwindow* window, int width, int height)
 {
-	glViewport(0, 0, width, height);
-	cam.aspectRatio = ((float)width) / ((float)height);
-	cam.recalculateMatrix();
+	resizeData = { width, height, true };
 }
 
 int main()
@@ -141,7 +142,7 @@ int main()
 
 	Shader geomShader = Shader("geom.vert","geom.frag");
 	
-	cam = FreeCamera(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 16.0f/9.0f, 45.0f);
+	FreeCamera cam = FreeCamera(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 16.0f/9.0f, 45.0f);
 
 
 	Mesh ScreenQuad = Mesh({
@@ -176,6 +177,22 @@ int main()
 	{
 		// Handle events
 		glfwPollEvents();
+		if (resizeData.changed) {
+			glViewport(0, 0, resizeData.width, resizeData.height);
+			
+			cam.aspectRatio = ((float)resizeData.width) / ((float)resizeData.height);
+			cam.recalculateMatrix();
+			
+			gPosition.resize(resizeData.width, resizeData.height);
+			gNormal.resize(resizeData.width, resizeData.height);
+			gAlbedoSpec.resize(resizeData.width, resizeData.height);
+			gBuffer.setTexture(GL_COLOR_ATTACHMENT0, gPosition.getTextureUnit());
+			gBuffer.setTexture(GL_COLOR_ATTACHMENT1, gNormal.getTextureUnit());
+			gBuffer.setTexture(GL_COLOR_ATTACHMENT2, gAlbedoSpec.getTextureUnit());
+			depthBuffer.resize(resizeData.width, resizeData.height);
+			
+			resizeData.changed = false;
+		}
 
 		double newTime = glfwGetTime();
 		float dt = (float)(newTime - oldTime);

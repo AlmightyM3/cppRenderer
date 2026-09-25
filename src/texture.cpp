@@ -49,6 +49,30 @@ void Texture::bind(int shaderTexUnit) {
 	glBindTextureUnit(shaderTexUnit, Texture::textureUnit);
 }
 
+void Texture::resize(GLsizei width, GLsizei height) {
+	GLint format;
+	glGetTextureLevelParameteriv(Texture::textureUnit, 0, GL_TEXTURE_INTERNAL_FORMAT, &format);
+	GLint wrap_s, wrap_t, min, mag;
+	glGetTextureParameteriv(Texture::textureUnit, GL_TEXTURE_WRAP_S, &wrap_s);
+	glGetTextureParameteriv(Texture::textureUnit, GL_TEXTURE_WRAP_T, &wrap_t);
+	glGetTextureParameteriv(Texture::textureUnit, GL_TEXTURE_MIN_FILTER, &min);
+	glGetTextureParameteriv(Texture::textureUnit, GL_TEXTURE_MAG_FILTER, &mag);
+
+	glDeleteTextures(1, &(Texture::textureUnit));
+
+	GLuint texUnit;
+	glCreateTextures(GL_TEXTURE_2D, 1, &texUnit);
+
+	glTextureParameteri(texUnit, GL_TEXTURE_WRAP_S, wrap_s);
+	glTextureParameteri(texUnit, GL_TEXTURE_WRAP_T, wrap_t);
+	glTextureParameteri(texUnit, GL_TEXTURE_MIN_FILTER, min);
+	glTextureParameteri(texUnit, GL_TEXTURE_MAG_FILTER, mag);
+
+	glTextureStorage2D(texUnit, 1, format, width, height);
+
+	Texture::textureUnit = texUnit;
+}
+
 GLuint Texture::getTextureUnit() {
 	return Texture::textureUnit;
 }

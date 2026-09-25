@@ -2,7 +2,8 @@
 
 ## Planned Features: 
 - [x] OBJ model loading
-- [ ] Deferred rendering
+- [x] Deferred rendering
+- [ ] PBR lighting
 - [ ] Rigidbody physics
 
 ## Planned Libraries: 

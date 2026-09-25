@@ -15,5 +15,7 @@ public:
 	void setParameter(GLenum parameter, GLint value);
 	void bind(int shaderTexUnit);
 
+	void resize(GLsizei width, GLsizei height); // Warning: May wipe texture contents.
+
 	GLuint getTextureUnit();
 };

@@ -12,6 +12,8 @@ public:
 
 	GLuint getRenderbuffer();
 
+	void resize(int width, int height);
+
 	void bind();
 	void unbind();
 };

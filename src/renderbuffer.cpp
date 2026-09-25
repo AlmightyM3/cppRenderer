@@ -15,6 +15,12 @@ GLuint Renderbuffer::getRenderbuffer() {
 	return Renderbuffer::renderbuffer;
 }
 
+void Renderbuffer::resize(int width, int height) {
+	GLint format;
+	glGetNamedRenderbufferParameteriv(Renderbuffer::renderbuffer, GL_RENDERBUFFER_INTERNAL_FORMAT, &format);
+	glNamedRenderbufferStorage(Renderbuffer::renderbuffer, format, width, height);
+}
+
 void Renderbuffer::bind() {
 	glBindRenderbuffer(GL_RENDERBUFFER, Renderbuffer::renderbuffer);
 }
