@@ -20,8 +20,7 @@ private:
     void calculateUniforms();
 
 public:
-    Shader(std::string vertexPath, std::string fragmentPath);
-    Shader(std::string vertexPath, std::string fragmentPath, std::string geometryPath);
+    Shader(std::string vertexPath, std::string fragmentPath, std::string geometryPath = "");
 
     ~Shader();
 

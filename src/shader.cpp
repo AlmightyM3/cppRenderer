@@ -28,21 +28,14 @@ static void handleLinkError(GLuint program)
 	};
 }
 
-Shader::Shader(std::string vertexPath, std::string fragmentPath) {
-	Shader::program = glCreateProgram();
-
-	Shader::compileShader(vertexPath, GL_VERTEX_SHADER);
-	Shader::compileShader(fragmentPath, GL_FRAGMENT_SHADER);
-
-	Shader::calculateUniforms();
-}
 
 Shader::Shader(std::string vertexPath, std::string fragmentPath, std::string geometryPath) {
 	Shader::program = glCreateProgram();
 
 	Shader::compileShader(vertexPath, GL_VERTEX_SHADER);
 	Shader::compileShader(fragmentPath, GL_FRAGMENT_SHADER);
-	Shader::compileShader(geometryPath, GL_GEOMETRY_SHADER);
+	if (geometryPath != "")
+		Shader::compileShader(geometryPath, GL_GEOMETRY_SHADER);
 
 	Shader::calculateUniforms();
 }

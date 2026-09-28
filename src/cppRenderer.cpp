@@ -109,7 +109,6 @@ int main()
 	// Set callback for user inputs
 	glfwSetKeyCallback(window, GLFW_KeyCallback);
 	glfwSetFramebufferSizeCallback(window, GLFW_ResizeCallback);
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
 	// Set up OpenGL
@@ -124,8 +123,7 @@ int main()
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad; 
 	// Setup Platform/Renderer backends
 	ImGui_ImplGlfw_InitForOpenGL(window, true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
 	ImGui_ImplOpenGL3_Init();
@@ -154,7 +152,6 @@ int main()
 	);
 	Shader litShader = Shader("lit.vert", "lit.frag");
 
-	//TODO: Allow the textures to resize.
 	Texture gPosition = Texture(GL_RGBA16F, GL_FLOAT, 1920, 1080, NULL);
 	Texture gNormal = Texture(GL_RGBA16F, GL_FLOAT, 1920, 1080, NULL);
 	Texture gAlbedoSpec = Texture(GL_RGBA16F, GL_UNSIGNED_BYTE, 1920, 1080, NULL);
@@ -204,7 +201,6 @@ int main()
 			cam.update(keys, (float)(xpos - mouseX), (float)(ypos - mouseY), dt);
 		} else
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			
 		mouseX = xpos;
 		mouseY = ypos;
 
@@ -218,6 +214,7 @@ int main()
 
 		ImGui::ShowDemoWindow();
 
+		// Start geomatry pass
 		gBuffer.bind();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -234,6 +231,8 @@ int main()
 		cube.render();
 
 		gBuffer.unbind();
+
+		// Start lighting pass
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
